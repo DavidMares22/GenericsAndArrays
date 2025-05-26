@@ -9,30 +9,26 @@ namespace SequenceApp;
 
 public static class ArrayManipulator
 {
-    public static int[] MoveXToCenter(int[] arr, int x)
+    public static int[] MoveXToCenter(int[] sourceArray, int targetValue)
     {
-      
+        var nonTargetValues = sourceArray.Where(item => item != targetValue).ToList();
+        var targetValues = sourceArray.Where(item => item == targetValue).ToList();
 
-        var nonXElements = arr.Where(item => item != x).ToList();
-        var xElements = arr.Where(item => item == x).ToList();
+        int leftNonTargetCount = (sourceArray.Length - targetValues.Count) / 2;
 
-        int leftNonXCount = (arr.Length - xElements.Count) / 2;
+        // Take the first half of non-target values
+        var reorderedSequence = nonTargetValues.Take(leftNonTargetCount);
 
-        // Start with the left non-X elements
-        var resultSequence = nonXElements.Take(leftNonXCount);
+        // Concatenate all the target values
+        reorderedSequence = reorderedSequence.Concat(targetValues);
 
-        // Concatenate all the X elements
-        resultSequence = resultSequence.Concat(xElements);
-
-        // Concatenate the remaining non-X elements (the right side)
-        resultSequence = resultSequence.Concat(nonXElements.Skip(leftNonXCount));
+        // Concatenate the remaining non-target values (the right side)
+        reorderedSequence = reorderedSequence.Concat(nonTargetValues.Skip(leftNonTargetCount));
 
         // Convert the final sequence to an array
-        var result = resultSequence.ToArray();
+        var resultArray = reorderedSequence.ToArray();
 
-        return result;
-
-        //Array.Copy(result, arr, arr.Length);
+        return resultArray;
     }
 
     // Optional: For testing
