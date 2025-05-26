@@ -41,8 +41,8 @@ public class Program
 
     private static void ExampleMoveXToCenter()
     {
-        int[] arr = { 1, 2, 3, 2, 4, 5, 6, 5 };
-        int x = 2;
+        int[] arr = { 1, 2, 3,6, 2, 4, 5, 6, 5 };
+        int x = 6;
         Console.WriteLine($"Original: ");
         PrintArray(arr);
         int[] res = MoveXToCenter(arr, x);
@@ -51,8 +51,8 @@ public class Program
 
         Console.WriteLine("\n---");
 
-        int[] arr2 = { 1, 3, 3, 2, 4, 2 };
-        int x2 = 2;
+        int[] arr2 = { 1, 3,6,6, 3, 2, 4, 2 };
+        int x2 = 6;
         Console.WriteLine($"Original: ");
         PrintArray(arr2);
         int[] res2 = MoveXToCenter(arr2, x2);
