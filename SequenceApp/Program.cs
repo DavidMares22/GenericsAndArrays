@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using static SequenceApp.ArrayManipulator;
-
 
 namespace SequenceApp;
 
@@ -10,7 +6,6 @@ public class Program
 {
     public static void Main()
     {
-        //ExampleMoveXToCenter();
 
         ExampleSequenceGenerators();
     }
@@ -39,24 +34,4 @@ public class Program
         Console.WriteLine("DelegateSequenceGenerator: " + string.Join(", ", delegateSeq));
     }
 
-    private static void ExampleMoveXToCenter()
-    {
-        int[] arr = { 1, 2, 3,6, 2, 4, 5, 6, 5 };
-        int x = 6;
-        Console.WriteLine($"Original: ");
-        PrintArray(arr);
-        int[] res = MoveXToCenter(arr, x);
-        Console.WriteLine($"Modified: ");
-        PrintArray(res);
-
-        Console.WriteLine("\n---");
-
-        int[] arr2 = { 1, 3,6,6, 3, 2, 4, 2 };
-        int x2 = 6;
-        Console.WriteLine($"Original: ");
-        PrintArray(arr2);
-        int[] res2 = MoveXToCenter(arr2, x2);
-        Console.WriteLine($"Modified: ");
-        PrintArray(res2);
-    }
 }

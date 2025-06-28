@@ -1,79 +1,116 @@
-# Generic Sequence Generators
+# GenericSequenceGenerator
 
-A intermediate level task for practicing object-oriented programming.
+A .NET 8 class library for generating sequences of various types using object-oriented and generic programming principles.
 
-Estimated time to complete the task: 2 hour.
+## Overview
 
-The task requires .NET 8 SDK installed.
+This library provides a flexible framework for generating sequences (such as Fibonacci numbers, custom integer/double/char sequences, and more) using a common interface and extensible base class. It supports both built-in and user-defined recurrence relations.
 
-## Task Description
+---
 
-Implement a class library of generators of sequences of elements of various types.
+## Components
 
-### 1. Generic Sequence Generator Interface
+### 1. `ISequenceGenerator<T>`
 
-- Create a generic interface `ISequenceGenerator<T>`.
-- Define the following properties:
-    - `Previous` of type `T`, representing the previous element in the sequence.
-    - `Current` of type `T`, representing the current element in the sequence.
-    - `Next` of type `T`, representing the next element in the sequence.
+A generic interface for sequence generators.
 
-### 2. Generic Sequence Generator Class
+**Properties:**
+- `T Previous`  
+  The previous element in the sequence.
+- `T Current`  
+  The current element in the sequence.
+- `T Next`  
+  The next element in the sequence (advances the sequence).
 
-- Create an abstract class `SequenceGenerator<T>` that implements the `ISequenceGenerator<T>` interface.
-- Provide a constructor that initializes two first values of the sequence.
-- Implement the properties `Previous` and `Current` with appropriate accessors.
-- Define a public property `Count`, representing the number of elements generated in the sequence. The property should have a public getter and a private setter.
-- Define an abstract method called `GetNext()` that returns an element of type `T` of the specific sequence.
+---
 
-### 3. Fibonacci Sequence Generator Class
+### 2. `SequenceGenerator<T>`
 
-- Create a class called `FibonacciSequenceGenerator` that inherits from `SequenceGenerator<int>`.
-- Provide a constructor that initializes two first values of the sequence.
-- Implement the `GetNext()` method to generate the next Fibonacci number based on the previous and current values. The Fibonacci sequence starts with two initial values (e.g., 0 and 1), and each subsequent number is the sum of the previous two.
+An abstract base class implementing `ISequenceGenerator<T>`.  
+Provides the core logic for managing sequence state and advancing the sequence.
 
-### 4. Integer Sequence Generator Class
-- Create a class called `IntegerSequenceGenerator` that inherits from `SequenceGenerator<int>`.
-- Provide a constructor that initializes two first values of the sequence.
-- Implement the `GetNext()` method to generate the elements of the sequence based the following rule:
+**Key Features:**
+- Constructor initializes the first two values of the sequence.
+- Properties:
+  - `Previous` (read-only): The previous value.
+  - `Current` (read-only): The current value.
+  - `Next` (read-only): Advances the sequence and returns the next value.
+  - `Count` (public getter, private setter): Number of elements generated so far.
+- Abstract method:
+  - `T GetNext()`: Computes the next value in the sequence (to be implemented by derived classes).
 
-  $`x_1 = 1, x_2 = 2, x_{n + 1} = 6 x_n - 8 x_{n - 1}, n = 2, 3, ... ,`$.
+---
 
-Data for tests: { 1, 2, 4, 8, 16, 32, 64, 128, 256, 512 }, ,` n = 10`
+### 3. `FibonacciSequenceGenerator`
 
-### 5. Double Sequence Generator Class
-- Create a class called `DoubleSequenceGenerator` that inherits from `SequenceGenerator<int>`.
-- Provide a constructor that initializes two first values of the sequence.
-- Implement the `GetNext()` method to generate the elements of the sequence based the following rule:
+Generates the Fibonacci sequence.
 
-  $`x_1 = 1, x_2 = 2, x_{n + 1} = x_n +  x_{n - 1} / x_{n}, n = 2, 3, ...,`$.
+- Inherits from `SequenceGenerator<int>`.
+- Constructor: Accepts two initial integer values.
+- Implements `GetNext()` to return the sum of the previous two values.
 
-Data for tests: {1, 2, 2.5, 3.3, 4.05757575757576, 4.87086926018965, 5.70389834408211, 6.55785277425587, 7.42763417076325, 8.31053343902137},` n = 10`
+---
 
-### 6. Char Sequence Generator Class
-- Create a class called `CharSequenceGenerator` that inherits from `SequenceGenerator<int>`.
-- Provide a constructor that initializes two first values of the sequence.
-- Implement the `GetNext()` method to generate the elements of the sequence based the following rule:
+### 4. `IntegerSequenceGenerator`
 
-  $`x_1 = a, x_2 = b, x_{n + 1} = (x_n +  x_{n - 1}) % 26 + 'A', n = 2, 3, ...,`$ where `a, b` - `char`.
+Generates a custom integer sequence defined by the recurrence:  
+`x₁ = 1, x₂ = 2, xₙ₊₁ = 6 * xₙ - 8 * xₙ₋₁`
 
-Data for tests: {'A', 'B', 'B', 'C', 'D', 'F', 'I', 'N', 'V', 'I'},` n = 10`
+- Inherits from `SequenceGenerator<int>`.
+- Constructor: Accepts two initial integer values.
+- Implements `GetNext()` using the above formula.
 
-### 7. Generic Sequence Generator Class With Delegate
+---
 
-- Use a delegate type to implement a generalized generator of the `n`-first members of a sequence specified by a recurrent formula for elements of type `T` according to the rule
+### 5. `DoubleSequenceGenerator`
 
-  $`x_1 = a, x_2 = b, x_{n+1}=f(x_n, x_{n - 1}), n = 2, 3, ...`$
+Generates a custom double sequence defined by the recurrence:  
+`x₁ = 1, x₂ = 2, xₙ₊₁ = xₙ + xₙ₋₁ / xₙ`
 
+- Inherits from `SequenceGenerator<double>`.
+- Constructor: Accepts two initial double values.
+- Implements `GetNext()` using the above formula.
 
-**Note**
-_The solution will not compile until all required types with required members are implemented. For a smoother development experience, we recommend initially declaring all necessary types and creating "stub methods" as follows:_
+---
 
-```csharp
-public returnType MethodName(parameters list)
-{
-    throw new NotImplementedException();
-}
-```
+### 6. `CharSequenceGenerator`
 
-_This approach allows you to build and run your project incrementally while implementing each method._
+Generates a character sequence defined by the recurrence:  
+`x₁ = a, x₂ = b, xₙ₊₁ = (xₙ + xₙ₋₁) % 26 + 'A'`
+
+- Inherits from `SequenceGenerator<char>`.
+- Constructor: Accepts two initial `char` values.
+- Implements `GetNext()` using the above formula, wrapping around the alphabet.
+
+---
+
+### 7. `DelegateSequenceGenerator<T>`
+
+A generic sequence generator that uses a delegate (function) to define the recurrence relation.
+
+- Inherits from `SequenceGenerator<T>`.
+- Constructor: Accepts two initial values and a `Func<T, T, T>` delegate representing the recurrence.
+- Implements `GetNext()` by invoking the provided delegate.
+
+---
+
+## Usage Example
+
+var fib = new FibonacciSequenceGenerator(0, 1);
+Console.WriteLine(fib.Previous); // 0
+Console.WriteLine(fib.Current);  // 1
+Console.WriteLine(fib.Next);     // 1
+Console.WriteLine(fib.Next);     // 2
+
+var custom = new DelegateSequenceGenerator<int>(1, 2, (x, y) => 6 * x - 8 * y);
+Console.WriteLine(custom.Next);  // 4
+
+---
+
+## Summary
+
+- **Extensible**: Add new sequence types by inheriting from `SequenceGenerator<T>`.
+- **Generic**: Works with any type and recurrence relation.
+- **Consistent API**: All generators expose the same interface for easy use and interchangeability.
+
+---
